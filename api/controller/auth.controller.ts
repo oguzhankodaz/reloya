@@ -108,7 +108,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
     const { password_hash, ...safeUser } = user.rows[0];
     const token = jwt.sign(
-      { userId: safeUser.id, email: safeUser.email, name: safeUser.name }, // payload
+      { userId: safeUser.id, email: safeUser.email, name: safeUser.name,role:safeUser.role }, // payload
       process.env.JWT_SECRET || "mysecretkey", // secret key
       { expiresIn: "7d" } // token süresi
     );
@@ -155,7 +155,7 @@ export const loginCompany = async (req: Request, res: Response) => {
 
     const { password_hash, ...safeUser } = user.rows[0];
     const token = jwt.sign(
-      { userId: safeUser.id, email: safeUser.email , name:safeUser.name},
+      { userId: safeUser.id, email: safeUser.email , name:safeUser.name ,role:safeUser.role},
       process.env.JWT_SECRET || "mysecretkey", // secret key
       { expiresIn: "7d" } // token süresi
     );

@@ -22,7 +22,9 @@ const UserDashboardPage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/auth/me", {
+        const api = import.meta.env.VITE_API_URL;
+
+        const res = await axios.get(`${api}/auth/me`, {
           withCredentials: true,
         });
         setUser(res.data.user);
@@ -80,7 +82,7 @@ const UserDashboardPage = () => {
       {/* QR Okut Butonu - alta */}
       <button
         onClick={() => setShowQr(!showQr)}
-        className="mt-10 flex items-center gap-2 px-6 py-3 rounded-full bg-yellow-400 text-gray-900 font-semibold shadow-md hover:bg-yellow-500 transition"
+        className="mt-10 flex items-center gap-2 px-6 py-13 rounded-full bg-yellow-400 text-gray-900 font-semibold shadow-md hover:bg-yellow-500 transition"
       >
         <QrCode className="w-5 h-5" />
         {showQr ? "QR Kapat" : "QR Okut"}

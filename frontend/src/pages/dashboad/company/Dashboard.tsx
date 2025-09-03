@@ -19,7 +19,9 @@ const CompanyDashboardPage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/auth/me", {
+        const api = import.meta.env.VITE_API_URL;
+
+        const res = await axios.get(`${api}/auth/me`, {
           withCredentials: true,
         });
         setUser(res.data.user);
@@ -61,13 +63,10 @@ const CompanyDashboardPage = () => {
 
       {/* Actions */}
       <button
-        onClick={() => {
-          // çıkış için backend logout endpoint çağırabilirsin
-          navigate("/");
-        }}
+        onClick={logout}
         className="mt-10 flex items-center gap-2 px-6 py-3 rounded-full bg-red-500 hover:bg-red-600 font-semibold shadow-md transition"
       >
-        <LogOut onClick={logout} className="w-5 h-5" /> Çıkış Yap
+        <LogOut className="w-5 h-5" /> Çıkış Yap
       </button>
     </div>
   );

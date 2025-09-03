@@ -11,11 +11,19 @@ const Homepage = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/auth/me", {
+        const api = import.meta.env.VITE_API_URL;
+
+        const res = await axios.get(`${api}/auth/me`, {
           withCredentials: true,
         });
 
-        if (res.data?.user) return navigate("/user-dashboard");
+        if (res.data?.user) {
+          if (res.data.user.role === 1) {
+            navigate("/company-dashboard");
+          } else if (res.data.user.role === 2) {
+            navigate("/user-dashboard");
+          }
+        }
       } catch (error) {
         // kullanıcı yoksa sorun değil
       } finally {
@@ -36,8 +44,8 @@ const Homepage = () => {
           ReloYa
         </h1>
         <p className="mt-4 text-lg md:text-xl text-white/90">
-          Müşteri sadakatini artır, satışlarını büyüt.  
-          Kullanıcılarınızla güçlü bağlar kurun.
+          Müşteri sadakatini artır, satışlarını büyüt. Kullanıcılarınızla güçlü
+          bağlar kurun.
         </p>
       </div>
 

@@ -34,7 +34,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 px-6">
       <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8 border border-gray-100">
         {/* Header */}
         <div className="text-center">

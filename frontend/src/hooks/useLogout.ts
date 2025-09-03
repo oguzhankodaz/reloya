@@ -7,7 +7,9 @@ export const useLogout = () => {
 
   const logout = async () => {
     try {
-      await axios.post("http://localhost:5000/auth/logout", {}, { withCredentials: true });
+      const api = import.meta.env.VITE_API_URL;
+
+      await axios.post(`${api}/auth/logout`, {}, { withCredentials: true });
       navigate("/"); // login sayfasına yönlendir
     } catch (err) {
       console.error("Logout error:", err);
