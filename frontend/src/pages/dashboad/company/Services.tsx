@@ -15,7 +15,9 @@ interface Category {
 const ServicesPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"category" | "product">("category");
+  const [activeTab, setActiveTab] = useState<"category" | "product">(
+    "category"
+  );
 
   // İlk açılışta kategorileri çek
   useEffect(() => {
@@ -77,7 +79,12 @@ const ServicesPage = () => {
         </>
       )}
 
-      {activeTab === "product" && <AddProductForm categories={categories} />}
+      {activeTab === "product" && (
+        <>
+          <AddProductForm categories={categories} />
+         
+        </>
+      )}
     </div>
   );
 };

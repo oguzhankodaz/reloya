@@ -47,7 +47,7 @@ export const getCategories = async (req: Request, res: Response) => {
 
 export const addProduct = async (req: Request, res: Response) => {
   try {
-    const { name, price,categoryId, points_to_buy, points_on_sell } = req.body;
+    const { name, price, categoryId, points_to_buy, points_on_sell } = req.body;
 
     // kategori var mı kontrol et (opsiyonel ama güvenli)
     const category = await pool.query(
@@ -76,4 +76,17 @@ export const addProduct = async (req: Request, res: Response) => {
     console.error("Add product error:", err);
     res.status(500).json({ success: false, message: "Server error" });
   }
+};
+
+export const getProducts = async (req: Request, res: Response) => {
+  const companyId = (req as any).user.userId;
+
+  try {
+    const result = await pool.query(
+      "SELECT * FROM products WHERE company_id = $1 ORDER BY created_at DESC",
+      [companyId]
+    );
+
+    res.status(200).json({ success: true, products: result.rows });
+  } catch (error) {}
 };
