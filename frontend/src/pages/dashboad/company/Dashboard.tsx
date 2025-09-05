@@ -1,7 +1,7 @@
 /** @format */
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { LogOut } from "lucide-react";
 import { useLogout } from "../../../hooks/useLogout";
 
@@ -61,7 +61,25 @@ const CompanyDashboardPage = () => {
         </p>
       </div>
 
+      <div className="flex gap-4 pt-6">
+        <button
+          onClick={() => navigate("/company-dashboard/customers")}
+          className="flex-1 px-4 py-3 rounded-xl bg-green-400/90 hover:bg-green-500 text-black font-medium shadow-md transition"
+        >
+          👥 Müşterilerim
+        </button>
+
+        <button
+          onClick={() => navigate("/company-dashboard/services")}
+          className="flex-1 px-4 py-3 rounded-xl bg-blue-400/90 hover:bg-blue-500 text-black font-medium shadow-md transition"
+        >
+          🛠️ Hizmetlerim
+        </button>
+      </div>
       {/* Actions */}
+      <div className="w-full max-w-2xl mt-8 flex justify-center">
+        <Outlet />
+      </div>
       <button
         onClick={logout}
         className="mt-10 flex items-center gap-2 px-6 py-3 rounded-full bg-red-500 hover:bg-red-600 font-semibold shadow-md transition"

@@ -6,7 +6,7 @@ import { addProduct } from "../controller/company.controller";
 
 const router = Router();
 
-router.post("/:categoryId/products", addProduct);
+router.post("/products", addProduct);
 
 
 
