@@ -1,8 +1,10 @@
+/** @format */
+
 import CategoryItem from "./CategoryItem";
 
 /** @format */
 interface Category {
-  id: number;
+  id: string;
   name: string;
   company_id: string;
   created_at: string;
@@ -11,9 +13,10 @@ interface Category {
 interface Props {
   categories: Category[];
   loading: boolean;
+  onDelete: (id: string) => void;
 }
 
-const CategoryList = ({ categories, loading }: Props) => {
+const CategoryList = ({ categories, loading, onDelete }: Props) => {
   return (
     <div className="mt-6">
       <h3 className="text-lg font-semibold mb-2">Kategoriler</h3>
@@ -24,7 +27,7 @@ const CategoryList = ({ categories, loading }: Props) => {
       ) : (
         <ul className="space-y-2">
           {categories.map((cat) => (
-            <CategoryItem key={cat.id} category={cat} />
+            <CategoryItem key={cat.id} category={cat} onDelete={onDelete} />
           ))}
         </ul>
       )}

@@ -1,5 +1,6 @@
 /** @format */
 
+import { useState } from "react";
 import ProductItem from "./ProductItem";
 
 interface Product {
@@ -16,21 +17,39 @@ interface Product {
 const ProductList = ({
   products,
   loading,
+  onDelete,
 }: {
   products: Product[];
   loading: boolean;
+  onDelete: (id: string) => void;
 }) => {
+  const [search, setSearch] = useState("");
+
+  const filteredProducts = products.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="mt-6">
       <h3 className="text-lg font-semibold mb-2">Ürünler</h3>
+
+      {/* Search input */}
+      <input
+        type="text"
+        placeholder="Ürün ara..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="border p-2 rounded w-full mb-4"
+      />
+
       {loading ? (
         <p>Ürünler yükleniyor...</p>
       ) : products.length === 0 ? (
         <p>Henüz ürün yok.</p>
       ) : (
         <ul className="space-y-2">
-          {products.map((p) => (
-            <ProductItem key={p.id} product ={p}></ProductItem>
+          {filteredProducts.map((p) => (
+            <ProductItem key={p.id} product={p} onDelete={onDelete}></ProductItem>
           ))}
         </ul>
       )}

@@ -6,7 +6,7 @@ import CategoryList from "../../../components/company/Categories/CategoryList";
 import AddProductForm from "../../../components/company/Products/AddProductForm";
 
 interface Category {
-  id: number;
+  id: string;
   name: string;
   company_id: string;
   created_at: string;
@@ -18,6 +18,18 @@ const ServicesPage = () => {
   const [activeTab, setActiveTab] = useState<"category" | "product">(
     "category"
   );
+
+  const handleDelete = async (id: string) => {
+    try {
+      const api = import.meta.env.VITE_API_URL;
+      await axios.delete(`${api}/companies/categories/${id}`, {
+        withCredentials: true,
+      });
+      setCategories((prev) => prev.filter((p) => p.id !== id));
+    } catch (error) {
+      console.error("Ürün silinemedi:", error);
+    }
+  };
 
   // İlk açılışta kategorileri çek
   useEffect(() => {
@@ -75,14 +87,17 @@ const ServicesPage = () => {
       {activeTab === "category" && (
         <>
           <AddCategoryForm onAddCategory={handleAddCategory} />
-          <CategoryList categories={categories} loading={loading} />
+          <CategoryList
+            onDelete={handleDelete}
+            categories={categories}
+            loading={loading}
+          />
         </>
       )}
 
       {activeTab === "product" && (
         <>
           <AddProductForm categories={categories} />
-         
         </>
       )}
     </div>

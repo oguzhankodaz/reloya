@@ -14,9 +14,23 @@ interface Product {
   company_id: string;
   created_at: string;
 }
+
 const AddProductForm = ({ categories }: { categories: any[] }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleDelete = async (id: string) => {
+    try {
+      const api = import.meta.env.VITE_API_URL;
+      await axios.delete(`${api}/categories/products/${id}`, {
+        withCredentials: true,
+      });
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+    } catch (error) {
+      console.error("Ürün silinemedi:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -73,67 +87,87 @@ const AddProductForm = ({ categories }: { categories: any[] }) => {
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white/10 p-4 rounded-lg shadow"
+      {/* Aç/Kapat butonu */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-full px-6 py-3 rounded-xl font-semibold shadow-md transition-transform transform hover:scale-105 ${
+          isOpen
+            ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white"
+            : "bg-white/20 text-gray-200 hover:bg-white/30"
+        }`}
       >
-        <h3 className="text-lg font-semibold mb-2">Ürün Ekle</h3>
+        {isOpen ? "✖ Formu Kapat" : "🛍️ Yeni Ürün Ekle"}
+      </button>
 
-        <div className="flex flex-col gap-3 mb-3">
-          <select
-            name="category_id"
-            className="px-3 py-2 rounded bg-white/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-            defaultValue=""
-          >
-            <option value="" disabled className="bg-gray-800 text-gray-300">
-              Kategori Seçin
-            </option>
-            {categories.map((cat) => (
-              <option
-                key={cat.id}
-                value={cat.id}
-                className="bg-gray-800 text-white"
-              >
-                {cat.name}
-              </option>
-            ))}
-          </select>
-
-          <input
-            type="text"
-            name="name"
-            placeholder="Ürün adı"
-            className="px-3 py-2 rounded bg-white/20 text-white placeholder-gray-300 focus:outline-none"
-          />
-          <input
-            type="number"
-            name="price"
-            placeholder="Fiyat"
-            className="px-3 py-2 rounded bg-white/20 text-white placeholder-gray-300 focus:outline-none"
-          />
-          <input
-            type="number"
-            name="points_to_buy"
-            placeholder="Satın Almak İçin Gerekli Puan"
-            className="px-3 py-2 rounded bg-white/20 text-white placeholder-gray-300 focus:outline-none"
-          />
-          <input
-            type="number"
-            name="points_on_sell"
-            placeholder="Satılınca Verilecek Puan"
-            className="px-3 py-2 rounded bg-white/20 text-white placeholder-gray-300 focus:outline-none"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
+      {/* Açılır/Kapanır kutu (animasyonlu) */}
+      <div
+        className={`transition-all duration-500 overflow-hidden ${
+          isOpen ? "max-h-[1000px] opacity-100 mt-4" : "max-h-0 opacity-0"
+        }`}
+      >
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white/10 p-4 rounded-lg shadow mb-6"
         >
-          Ekle
-        </button>
-      </form>
+          <h3 className="text-lg font-semibold mb-2">Ürün Ekle</h3>
 
-      <ProductList products={products} loading={loadingProducts}></ProductList>
+          <div className="flex flex-col gap-3 mb-3">
+            <select
+              name="category_id"
+              className="px-3 py-2 rounded bg-white/20 text-white"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Kategori Seçin
+              </option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id} className="text-black">
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="text"
+              name="name"
+              placeholder="Ürün adı"
+              className="px-3 py-2 rounded bg-white/20 text-white"
+            />
+            <input
+              type="number"
+              name="price"
+              placeholder="Fiyat"
+              className="px-3 py-2 rounded bg-white/20 text-white"
+            />
+            <input
+              type="number"
+              name="points_to_buy"
+              placeholder="Satın Almak İçin Gerekli Puan"
+              className="px-3 py-2 rounded bg-white/20 text-white"
+            />
+            <input
+              type="number"
+              name="points_on_sell"
+              placeholder="Satılınca Verilecek Puan"
+              className="px-3 py-2 rounded bg-white/20 text-white"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
+          >
+            Ekle
+          </button>
+        </form>
+      </div>
+
+      {/* Ürün listesi */}
+      <ProductList
+        products={products}
+        loading={loadingProducts}
+        onDelete={handleDelete}
+      ></ProductList>
     </>
   );
 };

@@ -90,3 +90,44 @@ export const getProducts = async (req: Request, res: Response) => {
     res.status(200).json({ success: true, products: result.rows });
   } catch (error) {}
 };
+
+export const deleteProduct = async (req: Request, res: Response) => {
+  const companyId = (req as any).user.userId;
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      "DELETE FROM products WHERE id = $1 AND company_id = $2 RETURNING *",
+      [id, companyId]
+    );
+
+    if (result.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Ürün bulunamadı veya yetkiniz yok" });
+    }
+    res.status(200).json({ success: true, product: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
+export const deleteCategory = async (req: Request, res: Response) => {
+  const companyId = (req as any).user.userId;
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      "DELETE FROM categories WHERE id = $1 AND company_id = $2 RETURNING *",
+      [id, companyId]
+    );
+
+    if (result.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "category bulunamadı veya yetkiniz yok" });
+    }
+    res.status(200).json({ success: true, product: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};

@@ -2,8 +2,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Outlet, useNavigate } from "react-router";
-import { LogOut } from "lucide-react";
+import { LogOut, QrCode } from "lucide-react";
 import { useLogout } from "../../../hooks/useLogout";
+import QRModal from "../../../components/qr/QRModal";
 
 interface User {
   userId: string;
@@ -14,6 +15,8 @@ interface User {
 const CompanyDashboardPage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showScanner, setShowScanner] = useState(false); // ✅ yeni state
+
   const navigate = useNavigate();
   const logout = useLogout();
   useEffect(() => {
@@ -76,6 +79,16 @@ const CompanyDashboardPage = () => {
           🛠️ Hizmetlerim
         </button>
       </div>
+
+      <div>
+        <button
+          onClick={() => setShowScanner(true)} // ✅ tıklayınca scanner aç
+          className="mt-10 flex items-center px-8 py-8 rounded-full bg-yellow-400 text-gray-900 font-semibold shadow-md hover:bg-yellow-500 transition"
+        >
+          <QrCode className="w-5 h-5" />
+        </button>
+      </div>
+      {showScanner && <QRModal onClose={() => setShowScanner(false)} />}
       {/* Actions */}
       <div className="w-full max-w-2xl mt-8 flex justify-center">
         <Outlet />
