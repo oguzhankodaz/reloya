@@ -10,6 +10,7 @@ const QRModal = ({ onClose }: { onClose: () => void }) => {
           components={{}}
           onScan={(result) => {
             console.log("QR kod:", result);
+            onClose()
           }}
           onError={(error) => {
             console.error("QR hata:", error);

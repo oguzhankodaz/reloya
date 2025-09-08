@@ -83,8 +83,9 @@ const CompanyDashboardPage = () => {
       <div>
         <button
           onClick={() => setShowScanner(true)} // ✅ tıklayınca scanner aç
-          className="mt-10 flex items-center px-8 py-8 rounded-full bg-yellow-400 text-gray-900 font-semibold shadow-md hover:bg-yellow-500 transition"
+          className="mt-10 flex items-center  justify-center gap-2 px-8 py-8 rounded-full bg-yellow-400 text-gray-900 font-semibold shadow-md hover:bg-yellow-500 transition"
         >
+          QR Okut
           <QrCode className="w-5 h-5" />
         </button>
       </div>
