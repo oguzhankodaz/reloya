@@ -5,6 +5,8 @@ import cors from "cors";
 import auth from "./routes/auth";
 import companies from "./routes/companies";
 import categories from "./routes/categories";
+import users from "./routes/users";
+
 
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -21,6 +23,9 @@ app.use(cookieParser()); // ✅ cookie parser buraya
 app.use("/auth", auth);
 app.use("/companies",authMiddleware, companies);
 app.use("/categories",authMiddleware, categories);
+app.use("/users",authMiddleware, users);
+
+
 
 
 app.listen(5000, () => {

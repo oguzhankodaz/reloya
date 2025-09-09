@@ -12,12 +12,11 @@ interface Product {
   created_at: string;
 }
 
-const ProductItem = ({
+const ClientProductItem = ({
   product,
-  onDelete,
+
 }: {
   product: Product;
-  onDelete: (id: string) => void;
 }) => {
   return (
     <li
@@ -35,7 +34,7 @@ const ProductItem = ({
 
         {/* ✅ Sil butonu */}
         <button
-          onClick={() => onDelete(product.id)}
+         
           className="px-2 py-1 bg-green-500 text-white rounded hover:bg-red-600 text-xs"
         >
           Ekle
@@ -45,4 +44,4 @@ const ProductItem = ({
   );
 };
 
-export default ProductItem;
+export default ClientProductItem;
